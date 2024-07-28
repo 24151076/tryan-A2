@@ -1,4 +1,4 @@
-public class Person {
+public abstract class Person {
     //some very general attributes related to all people
     private String name;
     private int age;

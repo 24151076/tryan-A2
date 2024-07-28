@@ -1,35 +1,35 @@
 public class Visitor extends Person {
-    private String ticketType;
-    private boolean hasPass; // simplified to a boolean, could be changed to a string in future if different passes were desired
+    private boolean hasPass;
+    private boolean hasFastTrack; // used to skip queue lines at movieworld
 
     // Default constructor
     public Visitor() {
         super();
-        this.ticketType = "";
         this.hasPass = false;
+        this.hasFastTrack = false;
     }
 
     // Constructor with parameters
-    public Visitor(String fullName, int age, String gender, String ticketType, boolean hasPass) {
-        super(fullName, age, gender);
-        this.ticketType = ticketType;
+    public Visitor(String name, int age, String gender, boolean hasPass, boolean hasFastTrack) {
+        super(name, age, gender);
         this.hasPass = hasPass;
+        this.hasFastTrack = hasFastTrack;
     }
 
     // Getters and Setters
-    public String getTicketType() {
-        return ticketType;
-    }
-
-    public void setTicketType(String ticketType) {
-        this.ticketType = ticketType;
-    }
-
     public boolean hasPass() {
         return hasPass;
     }
 
     public void setHasPass(boolean hasPass) {
         this.hasPass = hasPass;
+    }
+
+    public boolean hasFastTrack() {
+        return hasFastTrack;
+    }
+
+    public void setHasFastTrack(boolean hasFastTrack) {
+        this.hasFastTrack = hasFastTrack;
     }
 }
