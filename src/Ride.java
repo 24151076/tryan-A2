@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.LinkedList;
@@ -135,11 +136,18 @@ public class Ride implements RideInterface {
 
     @Override
     public void printRideHistory() {
+        System.out.println("Collection of visitors who have been on ride: ");
         Iterator<Visitor> iter = collectionOfVisitors.iterator();
         while (iter.hasNext()) {
             Visitor visitor = iter.next();
             System.out.println(visitor.getName());
         }
+    }
+
+    //Method to sort visitors using Comparator
+    public void sortVisitors() {
+        Collections.sort(collectionOfVisitors, new ComparatorClass());
+        System.out.println("Collection was sorted");
     }
 
     @Override
