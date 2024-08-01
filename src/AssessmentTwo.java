@@ -3,13 +3,14 @@ public class AssessmentTwo {
         AssessmentTwo assessment = new AssessmentTwo();
         //assessment.partThree();
         //assessment.partFourA();
-        assessment.partFourB();
+        //assessment.partFourB();
+        assessment.partFive();
     }
 
     public void partThree(){
         System.out.println("hello");
         // Create a new Ride object
-        Ride ride = new Ride("HyperCoaster", "rollerCoaster", "Max", null, false);
+        Ride ride = new Ride("HyperCoaster", "rollerCoaster", "Max", null, false, 1, 0);
 
         // Create Visitor objects
         Visitor visitor1 = new Visitor("Nehemia", 20, "Female", true, false);
@@ -38,7 +39,7 @@ public class AssessmentTwo {
     public void partFourA(){
         System.out.println("hello");
         // Create a new Ride object
-        Ride ride = new Ride("HyperCoaster", "rollerCoaster", "Max", null, true);
+        Ride ride = new Ride("HyperCoaster", "rollerCoaster", "Max", null, true, 1, 0);
         //Creating an operator and assigning to the ride so it can open
         Employee employee1 = new Employee("James", 40, "Male", "Ride Operator", 40000);
         ride.assignOperator(employee1);
@@ -56,11 +57,11 @@ public class AssessmentTwo {
         ride.addVisitorToQueue(visitor4);
         ride.addVisitorToQueue(visitor5);
 
-        ride.visitorTakesTheRide();
-        ride.visitorTakesTheRide();
-        ride.visitorTakesTheRide();
-        ride.visitorTakesTheRide();
-        ride.visitorTakesTheRide();
+        ride.runOneCycle();
+        ride.runOneCycle();
+        ride.runOneCycle();
+        ride.runOneCycle();
+        ride.runOneCycle();
 
         ride.checkingIfVisitorIsInCollection(visitor3);
 
@@ -71,7 +72,7 @@ public class AssessmentTwo {
     public void partFourB(){
         System.out.println("hello");
         // Create a new Ride object
-        Ride ride = new Ride("HyperCoaster", "rollerCoaster", "Max", null, true);
+        Ride ride = new Ride("HyperCoaster", "rollerCoaster", "Max", null, true, 1, 0);
         //Creating an operator and assigning to the ride so it can open
         Employee employee1 = new Employee("James", 40, "Male", "Ride Operator", 40000);
         ride.assignOperator(employee1);
@@ -89,11 +90,11 @@ public class AssessmentTwo {
         ride.addVisitorToQueue(visitor4);
         ride.addVisitorToQueue(visitor5);
 
-        ride.visitorTakesTheRide();
-        ride.visitorTakesTheRide();
-        ride.visitorTakesTheRide();
-        ride.visitorTakesTheRide();
-        ride.visitorTakesTheRide();
+        ride.runOneCycle();
+        ride.runOneCycle();
+        ride.runOneCycle();
+        ride.runOneCycle();
+        ride.runOneCycle();
 
         ride.printRideHistory();
 
@@ -102,7 +103,46 @@ public class AssessmentTwo {
         ride.printRideHistory();
     }
     public void partFive(){
+        System.out.println("hello");
+        // Create a new Ride object
+        Ride ride1 = new Ride("HyperCoaster", "rollerCoaster", "Max", null, true, 2, 0);
+        //Creating an operator and assigning to the ride so it can open
+        Employee employee1 = new Employee("James", 40, "Male", "Ride Operator", 40000);
+        ride1.assignOperator(employee1);
+        // Create Visitor objects
+        Visitor visitor1 = new Visitor("Nehemia", 20, "Female", true, false);
+        Visitor visitor2 = new Visitor("Jason", 21, "Male", true, true);
+        Visitor visitor3 = new Visitor("Jack", 22, "Male", true, false);
+        Visitor visitor4 = new Visitor("Sharon", 23, "Female", true, true);
+        Visitor visitor5 = new Visitor("Benny", 24, "Female", true, false);
+        Visitor visitor6 = new Visitor("Leo", 25, "Male", true, false);
+        Visitor visitor7 = new Visitor("Tom", 26, "Male", true, false);
+        Visitor visitor8 = new Visitor("Sherly", 27, "Female", true, false);
+        Visitor visitor9 = new Visitor("Ben", 28, "Male", true, false);
+        Visitor visitor10 = new Visitor("David", 29, "Male", true, false);
+
+
+        // Add 10 Visitors to the Queue
+        ride1.addVisitorToQueue(visitor1);
+        ride1.addVisitorToQueue(visitor2);
+        ride1.addVisitorToQueue(visitor3);
+        ride1.addVisitorToQueue(visitor4);
+        ride1.addVisitorToQueue(visitor5);
+        ride1.addVisitorToQueue(visitor6);
+        ride1.addVisitorToQueue(visitor7);
+        ride1.addVisitorToQueue(visitor8);
+        ride1.addVisitorToQueue(visitor9);
+        ride1.addVisitorToQueue(visitor10);
+
+        ride1.printQueue();
+
+        ride1.runOneCycle();
+
+        ride1.printQueue();
+
+        ride1.printRideHistory();
     }
+    
     public void partSix(){
     }
     public void partSeven(){

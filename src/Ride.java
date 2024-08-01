@@ -11,6 +11,8 @@ public class Ride implements RideInterface {
     private Employee operator;
     private Queue<Visitor> queue; //queue implements 'Queue' interface (so any of its child classes can then be used for flexibility), which stores visitor objects
     private LinkedList<Visitor> collectionOfVisitors; //LinkedList is specified because of task instructions
+    private int maxRider;
+    private int numOfCycles;
 
     // Default constructor
     public Ride() {
@@ -21,10 +23,12 @@ public class Ride implements RideInterface {
         this.isOpen = false;
         this.queue = new LinkedList<>(); //linkedList used for queue because it is the most commonly used class for Queue interface
         this.collectionOfVisitors = new LinkedList<>();
+        this.maxRider = 1; //more reasonable default value than 0
+        this.numOfCycles = 0; //default is 0
     }
 
     // Constructor with parameters
-    public Ride(String rideName, String attractionType, String thrillLevel, Employee operator, boolean isOpen) {
+    public Ride(String rideName, String attractionType, String thrillLevel, Employee operator, boolean isOpen, int maxRider, int numOfCycles) {
         this.rideName = rideName;
         this.attractionType = attractionType;
         this.thrillLevel = thrillLevel;
@@ -32,6 +36,8 @@ public class Ride implements RideInterface {
         this.isOpen = isOpen;
         this.queue = new LinkedList<>();
         this.collectionOfVisitors = new LinkedList<>();
+        this.maxRider = maxRider;
+        this.numOfCycles = numOfCycles;
     }
 
     // Getters and Setters
@@ -67,12 +73,28 @@ public class Ride implements RideInterface {
         this.operator = operator;
     }
 
-    public boolean isOpen() {
+    public boolean getIsOpen() {
         return isOpen;
     }
 
-    public void setOpen(boolean open) {
+    public void setIsOpen(boolean open) {
         isOpen = open;
+    }
+
+    public int getMaxRider() {
+        return maxRider;
+    }
+
+    public void setMaxRider(int maxRider) {
+        this.maxRider = maxRider;
+    }
+
+    public int getNumOfCycles() {
+        return numOfCycles;
+    }
+
+    public void setNumOfCycles(int numOfCycles) {
+        this.numOfCycles = numOfCycles;
     }
 
     // Method to assign an Employee to operate the ride
@@ -105,11 +127,15 @@ public class Ride implements RideInterface {
         }
     }
 
-    public void visitorTakesTheRide() { //method for adding a visitor
+    @Override
+    public void runOneCycle() { //method for adding a visitor
         if (isOpen && !queue.isEmpty()) { //provides some conditions for a visitor to take a ride (open and que not empty)
-            Visitor visitor = queue.poll(); //first object is pulled from queue and assigned to 'visitor' variable
-            collectionOfVisitors.add(visitor); //the visitor object is put into the collection
-            System.out.println(visitor.getName() + " is taking a ride.");
+            for (int i = 0; i < maxRider; i++) {
+                Visitor visitor = queue.poll(); //first object is pulled from queue and assigned to 'visitor' variable
+                collectionOfVisitors.add(visitor); //the visitor object is put into the collection
+                System.out.println(visitor.getName() + " is taking a ride.");
+            }
+            numOfCycles += 1; //adds 1 to numOfCycles to track it
         } else {
             System.out.println("The ride is either closed or there are no visitors in the queue.");
         }
@@ -150,8 +176,4 @@ public class Ride implements RideInterface {
         System.out.println("Collection was sorted");
     }
 
-    @Override
-    public void runOneCycle() {
-
-    }
 }
