@@ -32,4 +32,8 @@ public class Visitor extends Person {
     public void setHasFastTrack(boolean hasFastTrack) {
         this.hasFastTrack = hasFastTrack;
     }
+
+    public String toString() { //custom creating my string representation, visitor details
+        return "Visitor{name=" + getName() + ", age=" + getAge() + ", gender=" + getGender() + ", hasPass=" + hasPass + ", hasFastTrack=" + hasFastTrack + '}';
+    }
 }

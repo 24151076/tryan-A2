@@ -2,6 +2,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.io.*;
+import java.nio.file.*;
 
 public class Ride implements RideInterface {
     private String rideName;
@@ -174,6 +176,20 @@ public class Ride implements RideInterface {
     public void sortVisitors() {
         Collections.sort(collectionOfVisitors, new ComparatorClass());
         System.out.println("Collection was sorted");
+    }
+
+    // Method to write visitors' details to a file
+    public void exportVisitorsToFile(String filePath) {
+        Path path = Paths.get(filePath);
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            for (Visitor visitor : collectionOfVisitors) {
+                writer.write(visitor.toString()); //Visitor has overridden toString() method
+                writer.newLine();
+            }
+            System.out.println("Exported visitors to file: " + path.toAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Error exporting visitors to file: " + e.getMessage());
+        }
     }
 
 }

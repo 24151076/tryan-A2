@@ -4,7 +4,8 @@ public class AssessmentTwo {
         //assessment.partThree();
         //assessment.partFourA();
         //assessment.partFourB();
-        assessment.partFive();
+        //assessment.partFive();
+        assessment.partSix();
     }
 
     public void partThree(){
@@ -142,9 +143,36 @@ public class AssessmentTwo {
 
         ride1.printRideHistory();
     }
-    
+
     public void partSix(){
+        System.out.println("hello");
+
+        Ride ride1 = new Ride("HyperCoaster", "rollerCoaster", "Max", null, true, 5, 0); //made max riders 5 so only had to run it once
+
+        Employee employee1 = new Employee("James", 40, "Male", "Ride Operator", 40000);
+
+        ride1.assignOperator(employee1);
+
+        Visitor visitor1 = new Visitor("Nehemia", 20, "Female", true, false);
+        Visitor visitor2 = new Visitor("Jason", 21, "Male", true, true);
+        Visitor visitor3 = new Visitor("Jack", 22, "Male", true, false);
+        Visitor visitor4 = new Visitor("Sharon", 23, "Female", true, true);
+        Visitor visitor5 = new Visitor("Benny", 24, "Female", true, false);
+
+        // Add 5 Visitors to the Queue
+        ride1.addVisitorToQueue(visitor1);
+        ride1.addVisitorToQueue(visitor2);
+        ride1.addVisitorToQueue(visitor3);
+        ride1.addVisitorToQueue(visitor4);
+        ride1.addVisitorToQueue(visitor5);
+
+        ride1.runOneCycle();
+
+        ride1.printRideHistory();
+
+        ride1.exportVisitorsToFile("visitors.text");
     }
+
     public void partSeven(){
     }
 }
