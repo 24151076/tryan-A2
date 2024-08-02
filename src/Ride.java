@@ -4,6 +4,8 @@ import java.util.Queue;
 import java.util.LinkedList;
 import java.io.*;
 import java.nio.file.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Ride implements RideInterface {
     private String rideName;
@@ -15,6 +17,7 @@ public class Ride implements RideInterface {
     private LinkedList<Visitor> collectionOfVisitors; //LinkedList is specified because of task instructions
     private int maxRider;
     private int numOfCycles;
+    private final Lock lock = new ReentrantLock(); //I declare a lock object that will be used to keep operations on my queue and collection of visitor lists thread safe.
 
     // Default constructor
     public Ride() {
@@ -108,108 +111,159 @@ public class Ride implements RideInterface {
     // Interface method implementations
     @Override
     public void addVisitorToQueue(Visitor visitor) {
-        queue.offer(visitor);
-        System.out.println(visitor.getName() + " was added to the queue."); //no failure message required because linkedlist is dynamic, it will always allow a new object to be inserted
+        lock.lock();
+        try {
+            queue.offer(visitor);
+            System.out.println(visitor.getName() + " was added to the queue."); //no failure message required because linkedlist is dynamic, it will always allow a new object to be inserted
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
     public void removeVisitorFromQueue(Visitor visitor) {
-        if(queue.remove(visitor)) {
-            System.out.println(visitor.getName() + " was removed from the queue.");
-        } else {
-            System.out.println(visitor.getName() + " is not in the queue.");
+        lock.lock();
+        try {
+            if(queue.remove(visitor)) {
+                System.out.println(visitor.getName() + " was removed from the queue.");
+            } else {
+                System.out.println(visitor.getName() + " is not in the queue.");
+            }
+        } finally {
+            lock.unlock();
         }
     }
 
     @Override
     public void printQueue() {
-        System.out.println("Queue:");
-        for (Visitor visitor : queue) {
-            System.out.println(visitor.getName());
+        lock.lock();
+        try {
+            System.out.println("Queue:");
+            for (Visitor visitor : queue) {
+                System.out.println(visitor.getName());
+            }
+        } finally {
+            lock.unlock();
         }
     }
 
     @Override
     public void runOneCycle() { //method for adding a visitor
-        if (isOpen && !queue.isEmpty()) { //provides some conditions for a visitor to take a ride (open and que not empty)
-            for (int i = 0; i < maxRider; i++) {
-                Visitor visitor = queue.poll(); //first object is pulled from queue and assigned to 'visitor' variable
-                collectionOfVisitors.add(visitor); //the visitor object is put into the collection
-                System.out.println(visitor.getName() + " is taking a ride.");
+        lock.lock();
+        try {
+            if (isOpen && !queue.isEmpty()) { //provides some conditions for a visitor to take a ride (open and que not empty)
+                for (int i = 0; i < maxRider; i++) {
+                    Visitor visitor = queue.poll(); //first object is pulled from queue and assigned to 'visitor' variable
+                    if (visitor != null) {
+                        collectionOfVisitors.add(visitor); //the visitor object is put into the collection
+                        System.out.println(visitor.getName() + " is taking a ride.");
+                    }
+                }
+                numOfCycles += 1; //adds 1 to numOfCycles to track it
+            } else {
+                System.out.println("The ride is either closed or there are no visitors in the queue.");
             }
-            numOfCycles += 1; //adds 1 to numOfCycles to track it
-        } else {
-            System.out.println("The ride is either closed or there are no visitors in the queue.");
+        } finally {
+            lock.unlock();
         }
     }
 
     public void checkingIfVisitorIsInCollection(Visitor visitor) {
-        int x = 0;
-        for (Visitor v : collectionOfVisitors) {
-            if (v.equals(visitor)) {
-                System.out.println(visitor.getName() + " was found");
-                x = 1;
-                break;
+        lock.lock();
+        try {
+            int x = 0;
+            for (Visitor v : collectionOfVisitors) {
+                if (v.equals(visitor)) {
+                    System.out.println(visitor.getName() + " was found");
+                    x = 1;
+                    break;
+                }
             }
-        }
-        if (x == 0) {
-            System.out.println(visitor.getName() + " not found");
+            if (x == 0) {
+                System.out.println(visitor.getName() + " not found");
+            }
+        } finally {
+            lock.unlock();
         }
     }
 
     public void checkingCollectionAmount() {
-        int numberOfVisitors = collectionOfVisitors.size();
-        System.out.println("Number of visitors in the collection: " + numberOfVisitors);
+        lock.lock();
+        try {
+            int numberOfVisitors = collectionOfVisitors.size();
+            System.out.println("Number of visitors in the collection: " + numberOfVisitors);
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
     public void printRideHistory() {
-        System.out.println("Collection of visitors who have been on ride: ");
-        Iterator<Visitor> iter = collectionOfVisitors.iterator();
-        while (iter.hasNext()) {
-            Visitor visitor = iter.next();
-            System.out.println(visitor.getName());
+        lock.lock();
+        try {
+            System.out.println("Collection of visitors who have been on ride: ");
+            Iterator<Visitor> iter = collectionOfVisitors.iterator();
+            while (iter.hasNext()) {
+                Visitor visitor = iter.next();
+                System.out.println(visitor.getName());
+            }
+        } finally {
+            lock.unlock();
         }
     }
 
     //method to sort visitors using Comparator
     public void sortVisitors() {
-        Collections.sort(collectionOfVisitors, new ComparatorClass());
-        System.out.println("Collection was sorted");
+        lock.lock();
+        try {
+            Collections.sort(collectionOfVisitors, new ComparatorClass());
+            System.out.println("Collection was sorted");
+        } finally {
+            lock.unlock();
+        }
     }
 
     //method to write visitors details to a file
     public void exportVisitorsToFile(String filePath) {
-        Path path = Paths.get(filePath); //by using path class, you can use useful methods e.g. can check if the file exists at that path
-        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
-            for (Visitor visitor : collectionOfVisitors) {
-                writer.write(visitor.toString()); //Visitor has an overridden toString() method
-                writer.newLine();
+        lock.lock();
+        try {
+            Path path = Paths.get(filePath); //by using path class, you can use useful methods e.g. can check if the file exists at that path
+            try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+                for (Visitor visitor : collectionOfVisitors) {
+                    writer.write(visitor.toString()); //Visitor has an overridden toString() method
+                    writer.newLine();
+                }
+                System.out.println("Exported visitor data to file: " + path.toAbsolutePath());
+            } catch (IOException e) {
+                System.err.println("Error exporting visitor data to file: " + e.getMessage());
             }
-            System.out.println("Exported visitor data to file: " + path.toAbsolutePath());
-        } catch (IOException e) {
-            System.err.println("Error exporting visitor data to file: " + e.getMessage());
+        } finally {
+            lock.unlock();
         }
     }
 
     //method to import visitors from a file
     public void importVisitorsFromFile(String filePath) {
-        Path path = Paths.get(filePath);
-          if (!Files.exists(path)) { //checks if the file exists, I accidentally had a typo in the filepath, so I created this if statement
-              System.err.println("File does not exist: " + path.toAbsolutePath());
-            return;
-        }
-        try (BufferedReader reader = Files.newBufferedReader(path)) {
-            String line; //declaring String called line
-            while ((line = reader.readLine()) != null) { //looping through every line
-                Visitor visitor = Visitor.fromString(line.trim()); //creates visitor objects by calling fromString method for each line
-                collectionOfVisitors.add(visitor); //I added them to the collectionOfVisitors linkedlist, if desired they can also be offered to the que
-                System.out.println("Added visitor: " + visitor.getName());
+        lock.lock();
+        try {
+            Path path = Paths.get(filePath);
+            if (!Files.exists(path)) { //checks if the file exists, I accidentally had a typo in the filepath, so I created this if statement
+                System.err.println("File does not exist: " + path.toAbsolutePath());
+                return;
             }
-            System.out.println("Imported visitor data from file: " + path.toAbsolutePath());
-        } catch (IOException e) {
-            System.err.println("Error reading file");
+            try (BufferedReader reader = Files.newBufferedReader(path)) {
+                String line; //declaring String called line
+                while ((line = reader.readLine()) != null) { //looping through every line
+                    Visitor visitor = Visitor.fromString(line.trim()); //creates visitor objects by calling fromString method for each line
+                    collectionOfVisitors.add(visitor); //I added them to the collectionOfVisitors linkedlist, if desired they can also be offered to the que
+                    System.out.println("Added visitor: " + visitor.getName());
+                }
+                System.out.println("Imported visitor data from file: " + path.toAbsolutePath());
+            } catch (IOException e) {
+                System.err.println("Error reading file");
+            }
+        } finally {
+            lock.unlock();
         }
     }
-
 }
