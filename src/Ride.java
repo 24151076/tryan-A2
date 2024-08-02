@@ -172,23 +172,43 @@ public class Ride implements RideInterface {
         }
     }
 
-    //Method to sort visitors using Comparator
+    //method to sort visitors using Comparator
     public void sortVisitors() {
         Collections.sort(collectionOfVisitors, new ComparatorClass());
         System.out.println("Collection was sorted");
     }
 
-    // Method to write visitors' details to a file
+    //method to write visitors details to a file
     public void exportVisitorsToFile(String filePath) {
-        Path path = Paths.get(filePath);
+        Path path = Paths.get(filePath); //by using path class, you can use useful methods e.g. can check if the file exists at that path
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
             for (Visitor visitor : collectionOfVisitors) {
-                writer.write(visitor.toString()); //Visitor has overridden toString() method
+                writer.write(visitor.toString()); //Visitor has an overridden toString() method
                 writer.newLine();
             }
-            System.out.println("Exported visitors to file: " + path.toAbsolutePath());
+            System.out.println("Exported visitor data to file: " + path.toAbsolutePath());
         } catch (IOException e) {
-            System.err.println("Error exporting visitors to file: " + e.getMessage());
+            System.err.println("Error exporting visitor data to file: " + e.getMessage());
+        }
+    }
+
+    //method to import visitors from a file
+    public void importVisitorsFromFile(String filePath) {
+        Path path = Paths.get(filePath);
+          if (!Files.exists(path)) { //checks if the file exists, I accidentally had a typo in the filepath, so I created this if statement
+              System.err.println("File does not exist: " + path.toAbsolutePath());
+            return;
+        }
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            String line; //declaring String called line
+            while ((line = reader.readLine()) != null) { //looping through every line
+                Visitor visitor = Visitor.fromString(line.trim()); //creates visitor objects by calling fromString method for each line
+                collectionOfVisitors.add(visitor); //I added them to the collectionOfVisitors linkedlist, if desired they can also be offered to the que
+                System.out.println("Added visitor: " + visitor.getName());
+            }
+            System.out.println("Imported visitor data from file: " + path.toAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Error reading file");
         }
     }
 

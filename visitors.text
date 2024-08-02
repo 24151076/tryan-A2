@@ -1,5 +1,5 @@
-Visitor{name=Nehemia, age=20, gender=Female, hasPass=true, hasFastTrack=false}
-Visitor{name=Jason, age=21, gender=Male, hasPass=true, hasFastTrack=true}
-Visitor{name=Jack, age=22, gender=Male, hasPass=true, hasFastTrack=false}
-Visitor{name=Sharon, age=23, gender=Female, hasPass=true, hasFastTrack=true}
-Visitor{name=Benny, age=24, gender=Female, hasPass=true, hasFastTrack=false}
+Nehemia,20,Female,true,false
+Jason,21,Male,true,true
+Jack,22,Male,true,false
+Sharon,23,Female,true,true
+Benny,24,Female,true,false

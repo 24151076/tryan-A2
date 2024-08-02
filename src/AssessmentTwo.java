@@ -5,7 +5,8 @@ public class AssessmentTwo {
         //assessment.partFourA();
         //assessment.partFourB();
         //assessment.partFive();
-        assessment.partSix();
+        //assessment.partSix();
+        assessment.partSeven();
     }
 
     public void partThree(){
@@ -174,5 +175,10 @@ public class AssessmentTwo {
     }
 
     public void partSeven(){
+        Ride ride = new Ride();
+
+        ride.importVisitorsFromFile("visitors.text");
+
+        ride.printRideHistory();
     }
 }

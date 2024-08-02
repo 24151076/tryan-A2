@@ -33,7 +33,20 @@ public class Visitor extends Person {
         this.hasFastTrack = hasFastTrack;
     }
 
-    public String toString() { //custom creating my string representation, visitor details
-        return "Visitor{name=" + getName() + ", age=" + getAge() + ", gender=" + getGender() + ", hasPass=" + hasPass + ", hasFastTrack=" + hasFastTrack + '}';
+    public String toString() { //custom creating my string representation, visitor details in CSV format
+        return getName() + "," + getAge() + "," + getGender() + "," + hasPass + "," + hasFastTrack;
+    }
+
+    public static Visitor fromString(String str) { //creating fromString method to create Visitor objects from strings
+
+        //splits the string by commas
+        String[] parts = str.split(",");
+        String name = parts[0];
+        int age = Integer.parseInt(parts[1]);
+        String gender = parts[2];
+        boolean hasPass = Boolean.parseBoolean(parts[3]);
+        boolean hasFastTrack = Boolean.parseBoolean(parts[4]);
+
+        return new Visitor(name, age, gender, hasPass, hasFastTrack);
     }
 }
